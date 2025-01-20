@@ -11,7 +11,8 @@ The **Do It All** basic agent system for Python. It provides a framework for bui
 - Document reading
 - Normal Chatbot
 
-## Usage
+## Installation
+### CLI
 
 ### 1. Clone the repository:
 ```bash
@@ -36,6 +37,19 @@ Now run the demo
 ```bash
 python doitall/demo2.py
 ```
+### Python
+
+Save your API keys as the following Environmental Variables to use the models from each.
+- ```HF_KEY``` (Huggingface API)
+- ```OPENAI_API_KEY```
+- ```GEMINI_API_KEY```
+
+The available models can be updated in the doitall/main.py file.  The format is as follows:
+client_openai=[
+    {'type':'text','loc':'openai','name':"gpt-4o-mini",'rank':'op','max_tokens':128000,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'audio','loc':'openai','name':"whisper-1",'rank':'op','max_tokens':32000,'schema':{'bos':[],'eos':''},'ppt':'None'},
+]
+
 
 # TODO
 - Add more model sources
