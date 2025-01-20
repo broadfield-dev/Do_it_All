@@ -344,7 +344,7 @@ class Do_It_All:
         hist_in=self.out_hist
         current_time=str(datetime.datetime.now())
         timeline=str(data[4])
-        self.roles=[{'name':'MANAGER','system_prompt':str(prompts.MANAGER.replace("**ADVICE**",data[1].replace('<|im_start|>','').replace('<|im_end|>','')))},
+        self.roles=[{'name':'MANAGER','system_prompt':str(prompts.MANAGER.replace("**HISTORY**",str(hist_in)).replace("**ADVICE**",data[1].replace('<|im_start|>','').replace('<|im_end|>','')))},
                     {'name':'ADVISOR','system_prompt':str(prompts.ADVISOR.replace("**CURRENT_TIME**",current_time).replace("**TIMELINE**",timeline).replace("**HISTORY**",str(history)))},
                 {'name':'PATHMAKER','system_prompt':str(prompts.PATH_MAKER.replace('**STEPS**',str(data[2])).replace("**CURRENT_OR_NONE**",timeline).replace("**PROMPT**",json.dumps(data[0],indent=4)).replace("**HISTORY**",str(history)))},
                 {'name':'COMPRESS','system_prompt':str(prompts.COMPRESS.replace("**TASK**",str(prompt)).replace("**KNOWLEDGE**",str(data[0])).replace("**HISTORY**",str(history)))},
