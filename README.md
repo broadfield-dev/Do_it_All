@@ -58,7 +58,7 @@ Save your API keys as the following Environmental Variables to use the models fr
 
 The available models can be updated in the doitall/main.py file.  The format is as follows:
 
-```json
+```python
 client_openai=[
     {'type':'text','loc':'openai','name':"gpt-4o-mini",'rank':'op','max_tokens':128000,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
     {'type':'audio','loc':'openai','name':"whisper-1",'rank':'op','max_tokens':32000,'schema':{'bos':[],'eos':''},'ppt':'None'},
