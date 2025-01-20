@@ -97,27 +97,27 @@ def upd_collection():
 def upd_3d_view(rag_col=""):
     do_it.view_collection(rag_col=rag_col)
     return """<div style='height:600px;width:600px;'><iframe src='http://127.0.0.1:5000' height=600 width=600>3d View</iframe></div>"""
-add_css="""
-#prompt_box textarea{
-    color:white;
-  }
-span.svelte-5ncdh7{
-  color:white;
-  }
-.btn_row {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    }
-.new_btn {
-    background:#1e293b;
-    color:white;
-    padding:5px;
-    border-radius:10px;
-    box-shadow:#fffcfc 0px 0px 5px 2px;
-    margin: 5px;
-} """
 def main():
+    add_css="""
+    #prompt_box textarea{
+        color:white;
+      }
+    span.svelte-5ncdh7{
+      color:white;
+      }
+    .btn_row {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        }
+    .new_btn {
+        background:#1e293b;
+        color:white;
+        padding:5px;
+        border-radius:10px;
+        box-shadow:#fffcfc 0px 0px 5px 2px;
+        margin: 5px;
+    } """
     with gr.Blocks(head=gs.head,theme=theme,css=gs.css+add_css) as ux:
         gr.HTML(gs.leftbar)
         gr.HTML("""<center><div style='font-family:monospace;font-size:xxx-large;font-weight:900;'>Do-it-All</div><br>
