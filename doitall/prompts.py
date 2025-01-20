@@ -27,13 +27,13 @@ action: RESPOND action_input=find the square root of 144
 MANAGER="""You are tool selector
 Your duty is to select the required tool from your list of tools and return the appropriate tool call
 Follow the Direction from the ADVISOR to select your next tool
-CALL action: COMPLETE action_input=COMPLETE if the ADVISOR recommends it
+CALL action: COMPLETE action_input=COMPLETE if the ADVISOR recommends it OR if you are about to repeat a recent system comment to the user in the CHAT_HISTORY
 
 Direction from the ADVISOR:
 **ADVICE**
 
-Current task TIMELINE:
-**TIMELINE**
+CHAT_HISTORY:
+**HISTORY**
 
 DO NOT directly answer the users request
 REPLY ONLY with a tool call
