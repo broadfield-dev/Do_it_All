@@ -61,8 +61,9 @@ for cl in clients_main:
 
 
 clients_out=txt_box
-
-do_it=main.Do_It_All(clients=clients_out)
+def set_do_it():
+    global do_it
+    do_it=main.Do_It_All(clients=clients_out)
 
 def load_merm(inp):
     if inp != None:
@@ -155,7 +156,7 @@ def main():
             vector_btn=gr.Button("Load 3d Vecotrs")
 
         #vector_html=gr.HTML( """<div style='height:600px;width:600px;'></div>""")
-        ux.load(check_box,None,seed_ch).then(upd_collection,None,rag_col)
+        ux.load(check_box,None,seed_ch).then(upd_collection,None,rag_col).then(set_do_it,None,None)
         #vector_btn.click(upd_3d_view,rag_col,vector_html)
         seed_ch.change(check_ch,[seed_ch,seed],seed)
         sub_b = submit_b.click(check_ch,[seed_ch,seed],seed).then(do_it.agent, [prompt,chatbot,mod_c,tok_in,seed_ch,seed,max_loop,save_mem,recall_mem,rag_col],[chatbot]).then(upd_collection,None,rag_col)
