@@ -18,7 +18,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 
 import chromadb
 from chromadb.config import Settings
-from chromaviz import visualize_collection
+#from chromaviz import visualize_collection
 
 from ollama import chat
 from openai import OpenAI
@@ -162,11 +162,11 @@ class RagClient:
             print("Loaded")
             return results
         else: return ["No memories returned in response to possible COMPLETE"]
-    def view_collection(self,col_dir=""):
+    '''def view_collection(self,col_dir=""):
         emb_fn=HuggingFaceEmbeddings(model_name=self.model_name)
         client = chromadb.PersistentClient(path=self.clientDir)
         collection = client.get_collection(name=self.collection_name,embedding_function=emb_fn)
-        visualize_collection(collection)
+        visualize_collection(collection)'''
 def isV(inp,is_=False,type=""):  # Verbose
     if is_==True:
         print(inp)
