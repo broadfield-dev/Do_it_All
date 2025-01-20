@@ -1,8 +1,8 @@
 import gradio as gr
 from .gradio_theme import theme
 import random
-import .main as main
-import .gradio_sidebar as gs
+import main as main
+import gradio_sidebar as gs
 
 def isV(inp,is_=False):  # Verbose
     if is_==True:
