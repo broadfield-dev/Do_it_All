@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "doitall"
+version = "0.0.2" 
+description = "A basic AI Agent system for Python."
+keywords = ["python", "package", "doitall", "ai", "agent"]
+authors = [
+  { name="broadfield-dev" }
+]
+dependencies = [
+  "huggingface-hub==0.27.0",
+  "beautifulsoup4==4.12.3",
+  "requests==2.32.3",
+  "lxml==5.3.0",
+  "gradio>=5.8.0"
+]
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/broadfield-dev/doitall"
+"Issues" = "https://github.com/broadfield-dev/doitall/issues"
+
+[tool.setuptools.packages.find]
+where = ["module"]
