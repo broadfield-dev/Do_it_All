@@ -3,8 +3,8 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "doitall"
-version = "0.0.2" 
+name = "Do_it_All"
+version = "0.0.3" 
 description = "A basic AI Agent system for Python."
 keywords = ["python", "package", "doitall", "ai", "agent"]
 authors = [
@@ -27,8 +27,8 @@ classifiers = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/broadfield-dev/doitall"
-"Issues" = "https://github.com/broadfield-dev/doitall/issues"
+"Homepage" = "https://github.com/broadfield-dev/Do_it_all"
+"Issues" = "https://github.com/broadfield-dev/Do_it_all/issues"
 
 [tool.setuptools.packages.find]
-where = ["module"]
+where = ["doitall"]
