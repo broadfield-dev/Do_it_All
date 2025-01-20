@@ -32,6 +32,9 @@ CALL action: COMPLETE action_input=COMPLETE if the ADVISOR recommends it
 Direction from the ADVISOR:
 **ADVICE**
 
+Current task TIMELINE:
+**TIMELINE**
+
 DO NOT directly answer the users request
 REPLY ONLY with a tool call
 """+f"{TOOLS}"+""" 
