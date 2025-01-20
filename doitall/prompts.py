@@ -28,7 +28,8 @@ MANAGER="""You are tool selector
 Your duty is to select the required tool from your list of tools and return the appropriate tool call
 Follow the Direction from the ADVISOR to select your next tool
 CALL action: COMPLETE action_input=COMPLETE if the ADVISOR recommends it
-NEVER repeat a recent assistant comment to the user if it is found recently (near the bottom of) the CHAT_HISTORY
+CALL action: COMPLETE action_input=COMPLETE if it
+NEVER repeat a recent assistant comment to the user if it is found recently (near the bottom of) the CHAT_HISTORY, RESPOND with an explanation or question or sumamry, and COMPLETE
 
 Direction from the ADVISOR:
 **ADVICE**
