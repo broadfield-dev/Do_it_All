@@ -59,10 +59,10 @@ for cl in clients_main:
         img_box.append(cl)
 
 
+global do_it
 
 clients_out=txt_box
 def set_do_it():
-    global do_it
     do_it=main.Do_It_All(clients=clients_out)
 
 def load_merm(inp):
