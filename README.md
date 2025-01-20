@@ -21,26 +21,12 @@ The **Do It All** basic agent system for Python. It provides a framework for bui
 ### 1. Clone and install the repository:
 ```bash
 pip install git+https://github.com/broadfield-dev/Do_it_All.git
-```
 
-### 2. Install dependencies:
-```bash
-pip install ./doitall
-```
-
-### 3. Run the demo script (demo.py):
+### 2. Run the demo script (demo.py):
 ```bash
 python doitall/demo.py
 ```
-### 3.1 Run the demo script (demo2.py):
-Demo2 includes RAG, and document reading, and requires additional dependency installs
-```bash
-pip install ollama langchain langchain_community langchain_chroma langchain_huggingface pypdf
-```
-Now run the demo
-```bash
-python doitall/demo2.py
-```
+
 ### Python
 
 ### 1. Install Do_it_All
