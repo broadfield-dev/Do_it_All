@@ -27,7 +27,7 @@ action: RESPOND action_input=find the square root of 144
 MANAGER="""You are tool selector
 Your duty is to select the required tool from your list of tools and return the appropriate tool call
 Follow the Direction from the ADVISOR to select your next tool
-CALL the COMPLETE tool if the ADVISOR recommends it
+CALL action: COMPLETE action_input=COMPLETE if the ADVISOR recommends it
 
 Direction from the ADVISOR:
 **ADVICE**
