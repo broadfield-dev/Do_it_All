@@ -21,6 +21,7 @@ The **Do It All** basic agent system for Python. It provides a framework for bui
 ### 1. Clone and install the repository:
 ```bash
 pip install git+https://github.com/broadfield-dev/Do_it_All.git
+```
 
 ### 2. Run the demo script (demo.py):
 ```bash
