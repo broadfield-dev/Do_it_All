@@ -154,10 +154,9 @@ def main():
             gr.skip()
             vector_btn=gr.Button("Load 3d Vecotrs")
 
-        vector_html=gr.HTML( """<div style='height:600px;width:600px;'></div>""")
+        #vector_html=gr.HTML( """<div style='height:600px;width:600px;'></div>""")
         ux.load(check_box,None,seed_ch).then(upd_collection,None,rag_col)
-        #rag_col.then(upd_collection,None,rag_col)
-        vector_btn.click(upd_3d_view,rag_col,vector_html)
+        #vector_btn.click(upd_3d_view,rag_col,vector_html)
         seed_ch.change(check_ch,[seed_ch,seed],seed)
         sub_b = submit_b.click(check_ch,[seed_ch,seed],seed).then(do_it.agent, [prompt,chatbot,mod_c,tok_in,seed_ch,seed,max_loop,save_mem,recall_mem,rag_col],[chatbot]).then(upd_collection,None,rag_col)
         sub_p = prompt.submit(check_ch,[seed_ch,seed],seed).then(do_it.agent, [prompt,chatbot,mod_c,tok_in,seed_ch,seed,max_loop,save_mem,recall_mem,rag_col],[chatbot]).then(upd_collection,None,rag_col)
