@@ -3,7 +3,7 @@ import gradio as gr
 import datetime
 import requests
 import random
-import prompts
+from doitall import prompts
 import uuid
 import json
 import bs4
