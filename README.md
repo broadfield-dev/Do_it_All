@@ -20,7 +20,7 @@ The **Do It All** basic agent system for Python. It provides a framework for bui
 
 ### 1. Clone and install the repository:
 ```bash
-pip install git+https://github.com/broadfield-dev/Do_it_All.git
+pip install git+https://github.com/broadfield-dev/Do_it_All
 ```
 
 ### 2. Run the demo script (demo.py):
@@ -32,7 +32,7 @@ python doitall/demo.py
 
 ### 1. Install Do_it_All
 ```bash
-pip install git+https://github.com/broadfield-dev/Do_it_All.git
+pip install git+https://github.com/broadfield-dev/Do_it_All
 ```
 
 ### 2. Save API Keys
