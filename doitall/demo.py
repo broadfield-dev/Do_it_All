@@ -58,8 +58,7 @@ for cl in clients_main:
     elif cl['type'] == 'image':
         img_box.append(cl)
 
-
-global do_it
+do_it=main.Do_It_All(clients=clients_out)
 
 clients_out=txt_box
 def set_do_it():
