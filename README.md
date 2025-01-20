@@ -36,13 +36,12 @@ pip install git+https://github.com/broadfield-dev/Do_it_All
 ```
 
 ### 2. Save API Keys
-```
 Save your API keys as the following Environmental Variables to use the models from each.
 - ```HF_KEY``` (Huggingface API)
 - ```OPENAI_API_KEY```
 - ```GEMINI_API_KEY```
 If you are signed in to a service already, the environmental varialble may already be set
-```
+
 
 ### 3. Load in Python
 ```python
