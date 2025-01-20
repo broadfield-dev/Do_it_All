@@ -457,7 +457,7 @@ class Do_It_All:
         timeline=str(data[4])
         self.roles=[
                 {'name':'INTERNET_SEARCH','system_prompt':str(prompts.INTERNET_SEARCH.replace("**TASK**",str(prompt)).replace("**KNOWLEDGE**",str(data[3])).replace("**HISTORY**",str(history)))},
-                {'name':'RESPOND','system_prompt':str(prompts.RESPOND.replace("**CURRENT_TIME**",current_time).replace("**PROMPT**",prompt).replace("**HISTORY**",str(history)).replace("**TIMELINE**",timeline))},
+                {'name':'RESPOND','system_prompt':str(prompts.RESPOND.replace("**CURRENT_TIME**",current_time).replace("**HISTORY**",str(history)).replace("**TIMELINE**",timeline))},
                 ]
         roles = self.roles
         g=True

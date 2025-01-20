@@ -137,8 +137,6 @@ You have completed this path:
 
 Here is your chat history for context:
 **HISTORY**
-
-USER PROMPT: **PROMPT**
 """
 
 
