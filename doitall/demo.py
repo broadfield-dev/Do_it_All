@@ -1,5 +1,5 @@
 import gradio as gr
-from gradio_theme import theme
+import gradio_theme.theme as theme
 import random
 import main
 import gradio_sidebar as gs
