@@ -142,7 +142,7 @@ def main():
             mod_c=gr.Dropdown(label="Model",choices=[n['name'] for n in do_it.clients],value='Qwen/Qwen2.5-Coder-32B-Instruct',type='index')
             tok_in=gr.Textbox(label='HF TOKEN', visible=False)
 
-            max_loop=gr.Slider(label="Max loop", minimum=1,maximum=10,value=5,step=1)
+            max_loop=gr.Slider(label="Max loop", minimum=1,maximum=10,value=1,step=1)
             with gr.Row():
                 rag_col=gr.Dropdown(label="Collection Name",choices=[],allow_custom_value=True,value='memory',interactive=True)
                 with gr.Column():
