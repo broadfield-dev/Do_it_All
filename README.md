@@ -9,14 +9,18 @@ The **Do It All** basic agent system for Python. It provides a framework for bui
 - Image Generation
 - RAG system
 - Document reading
-- Normal Chatbot
+
+## API Integrations
+- Huggingface
+- OpenAI
+- Google GenAI
 
 ## Installation
 ### CLI
 
-### 1. Clone the repository:
+### 1. Clone and install the repository:
 ```bash
-git clone https://github.com/broadfield-dev/Do_it_All.git
+pip install git+https://github.com/broadfield-dev/Do_it_All.git
 ```
 
 ### 2. Install dependencies:
@@ -39,24 +43,30 @@ python doitall/demo2.py
 ```
 ### Python
 
-Install Do_it_All
+### 1. Install Do_it_All
 ```bash
 pip install git+https://github.com/broadfield-dev/Do_it_All.git
 ```
-Load into Python
-```python
-from doitall import main
-history = []
-prompt_in="why is the sky blue?"
-print(main.agent(prompt_in,history,mod=2,tok_in="",rand_seed=True,seed=1,max_thought=5,save_mem=False,recall_mem=False,rag_col=False))
 
+### 2. Save API Keys
 ```
 Save your API keys as the following Environmental Variables to use the models from each.
 - ```HF_KEY``` (Huggingface API)
 - ```OPENAI_API_KEY```
 - ```GEMINI_API_KEY```
+If you are signed in to a service already, the environmental varialble may already be set
+```
 
-The available models can be updated in the doitall/main.py file.  The format is as follows:
+### 3. Load in Python
+```python
+from doitall import main
+history = []
+prompt_in="why is the sky blue?"
+print(main.agent(prompt_in,history,mod=2,tok_in="",rand_seed=True,seed=1,max_thought=5,save_mem=False,recall_mem=False,rag_col=False))
+```
+
+### 3.1 Configure Models
+The available models can be configured in the doitall/main.py file.  The format is as follows:
 
 ```python
 client_openai=[
