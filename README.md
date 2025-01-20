@@ -40,6 +40,7 @@ Save your API keys as the following Environmental Variables to use the models fr
 - ```HF_KEY``` (Huggingface API)
 - ```OPENAI_API_KEY```
 - ```GEMINI_API_KEY```
+
 If you are signed in to a service already, the environmental varialble may already be set
 
 
