@@ -152,7 +152,7 @@ def main():
             stop_b = gr.Button("Stop")
             clear = gr.ClearButton([chatbot])
             gr.skip()
-            vector_btn=gr.Button("Load 3d Vecotrs")
+            #vector_btn=gr.Button("Load 3d Vecotrs")
 
         #vector_html=gr.HTML( """<div style='height:600px;width:600px;'></div>""")
         ux.load(check_box,None,seed_ch).then(upd_collection,None,rag_col).then(set_do_it,None,None)
