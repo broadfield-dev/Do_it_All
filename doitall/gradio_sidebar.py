@@ -184,6 +184,10 @@ transform: rotate(270deg);
 #gs_right_bar.open {
     right: 0px;
 }
+@media screen and (max-width:320px) {
+gs_left_bar {width:240px
+  /* CSS for screens that are 320 pixels or less will be put in this section */
+}
   """
 topbar="""<div id='gs_top_bar'><div id='top_control_btn' onclick='top_open_control()'>Controls</div></div>"""
 leftbar="""<div id='gs_left_bar'><div id='left_control_btn' onclick='left_open_control()'>Controls</div></div>"""
