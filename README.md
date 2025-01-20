@@ -39,17 +39,30 @@ python doitall/demo2.py
 ```
 ### Python
 
+Install Do_it_All
+```bash
+pip install git+https://github.com/broadfield-dev/Do_it_All.git
+```
+Load into Python
+```python
+from doitall import main
+history = []
+prompt_in="why is the sky blue?"
+print(main.agent(prompt_in,history,mod=2,tok_in="",rand_seed=True,seed=1,max_thought=5,save_mem=False,recall_mem=False,rag_col=False))
+
+```
 Save your API keys as the following Environmental Variables to use the models from each.
 - ```HF_KEY``` (Huggingface API)
 - ```OPENAI_API_KEY```
 - ```GEMINI_API_KEY```
 
 The available models can be updated in the doitall/main.py file.  The format is as follows:
+```json
 client_openai=[
     {'type':'text','loc':'openai','name':"gpt-4o-mini",'rank':'op','max_tokens':128000,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
     {'type':'audio','loc':'openai','name':"whisper-1",'rank':'op','max_tokens':32000,'schema':{'bos':[],'eos':''},'ppt':'None'},
 ]
-
+```
 
 # TODO
 - Add more model sources
