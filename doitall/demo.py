@@ -118,7 +118,7 @@ span.svelte-5ncdh7{
     margin: 5px;
 } """
 def main():
-    with gr.Blocks(head=gs.head,theme=gt.theme,css=gs.css+add_css) as ux:
+    with gr.Blocks(head=gs.head,theme=gt.theme,css=add_css+gs.css) as ux:
         gr.HTML(gs.leftbar)
         gr.HTML("""<center><div style='font-family:monospace;font-size:xxx-large;font-weight:900;'>Do-it-All</div><br>
                 <div style='font-size:large;font-weight:700;'>Basic AI Agent System</div><br>
