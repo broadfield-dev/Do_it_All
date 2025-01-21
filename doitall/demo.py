@@ -1,8 +1,8 @@
 import gradio as gr
-from .gradio_theme import theme
+from doitall import gradio_theme as gt
 import random
 from doitall import main
-from doitall import gradio_sidebar as gs
+import gradio_sidebar as gs
 
 def isV(inp,is_=False):  # Verbose
     if is_==True:
@@ -58,11 +58,11 @@ for cl in clients_main:
     elif cl['type'] == 'image':
         img_box.append(cl)
 
-clients_out=txt_box
-do_it=main.Do_It_All(clients=clients_out)
 
-def set_do_it():
-    do_it=main.Do_It_All(clients=clients_out)
+
+clients_out=txt_box
+
+do_it=main.Do_It_All(clients=clients_out)
 
 def load_merm(inp):
     if inp != None:
@@ -97,28 +97,28 @@ def upd_collection():
 def upd_3d_view(rag_col=""):
     do_it.view_collection(rag_col=rag_col)
     return """<div style='height:600px;width:600px;'><iframe src='http://127.0.0.1:5000' height=600 width=600>3d View</iframe></div>"""
+add_css="""
+#prompt_box textarea{
+    color:white;
+  }
+span.svelte-5ncdh7{
+  color:white;
+  }
+.btn_row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    }
+.new_btn {
+    background:#1e293b;
+    color:white;
+    padding:5px;
+    border-radius:10px;
+    box-shadow:#fffcfc 0px 0px 5px 2px;
+    margin: 5px;
+} """
 def main():
-    add_css="""
-    #prompt_box textarea{
-        color:white;
-      }
-    span.svelte-5ncdh7{
-      color:white;
-      }
-    .btn_row {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        }
-    .new_btn {
-        background:#1e293b;
-        color:white;
-        padding:5px;
-        border-radius:10px;
-        box-shadow:#fffcfc 0px 0px 5px 2px;
-        margin: 5px;
-    } """
-    with gr.Blocks(head=gs.head,theme=theme,css=gs.css+add_css) as ux:
+    with gr.Blocks(head=gs.head,theme=gt.theme,css=gs.css+add_css) as ux:
         gr.HTML(gs.leftbar)
         gr.HTML("""<center><div style='font-family:monospace;font-size:xxx-large;font-weight:900;'>Do-it-All</div><br>
                 <div style='font-size:large;font-weight:700;'>Basic AI Agent System</div><br>
@@ -142,7 +142,7 @@ def main():
             mod_c=gr.Dropdown(label="Model",choices=[n['name'] for n in do_it.clients],value='Qwen/Qwen2.5-Coder-32B-Instruct',type='index')
             tok_in=gr.Textbox(label='HF TOKEN', visible=False)
 
-            max_loop=gr.Slider(label="Max loop", minimum=1,maximum=10,value=3,step=1)
+            max_loop=gr.Slider(label="Max loop", minimum=1,maximum=10,value=5,step=1)
             with gr.Row():
                 rag_col=gr.Dropdown(label="Collection Name",choices=[],allow_custom_value=True,value='memory',interactive=True)
                 with gr.Column():
@@ -152,11 +152,12 @@ def main():
             stop_b = gr.Button("Stop")
             clear = gr.ClearButton([chatbot])
             gr.skip()
-            #vector_btn=gr.Button("Load 3d Vecotrs")
+            vector_btn=gr.Button("Load 3d Vecotrs")
 
-        #vector_html=gr.HTML( """<div style='height:600px;width:600px;'></div>""")
-        ux.load(check_box,None,seed_ch).then(upd_collection,None,rag_col).then(set_do_it,None,None)
-        #vector_btn.click(upd_3d_view,rag_col,vector_html)
+        vector_html=gr.HTML( """<div style='height:600px;width:600px;'></div>""")
+        ux.load(check_box,None,seed_ch).then(upd_collection,None,rag_col)
+        #rag_col.then(upd_collection,None,rag_col)
+        vector_btn.click(upd_3d_view,rag_col,vector_html)
         seed_ch.change(check_ch,[seed_ch,seed],seed)
         sub_b = submit_b.click(check_ch,[seed_ch,seed],seed).then(do_it.agent, [prompt,chatbot,mod_c,tok_in,seed_ch,seed,max_loop,save_mem,recall_mem,rag_col],[chatbot]).then(upd_collection,None,rag_col)
         sub_p = prompt.submit(check_ch,[seed_ch,seed],seed).then(do_it.agent, [prompt,chatbot,mod_c,tok_in,seed_ch,seed,max_loop,save_mem,recall_mem,rag_col],[chatbot]).then(upd_collection,None,rag_col)
