@@ -41,7 +41,7 @@ Save your API keys as the following Environmental Variables to use the models fr
 - ```OPENAI_API_KEY```
 - ```GEMINI_API_KEY```
 
-If you are signed in to Huggingface.co, the demo should work without any modification thanks to Huggingface's free API for all users, up to 1000 requests per day.
+If you are signed in to Huggingface.co, the demo should work without any modification, using the default model, thanks to Huggingface's free API for all users, up to 1000 requests per day.
 
 ### 3. Load in Python
 ```python
