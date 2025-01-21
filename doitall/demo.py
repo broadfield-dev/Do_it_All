@@ -147,7 +147,7 @@ def main():
             seed_ch=gr.Checkbox(label="Random",value=False)
             seed=gr.Number(label="Seed",step=1,precision=0,value=do_it.seed_val,interactive=True)
 
-            mod_c=gr.Dropdown(label="Model",choices=[n['name'] for n in do_it.clients],value='Qwen/Qwen2.5-Coder-32B-Instruct',type='index')
+            mod_c=gr.Dropdown(label="Chat Model",choices=[n['name'] for n in do_it.clients],value='Qwen/Qwen2.5-Coder-32B-Instruct',type='index')
             tok_in=gr.Textbox(label='HF TOKEN', visible=False)
 
             max_loop=gr.Slider(label="Max loop", minimum=1,maximum=10,value=3,step=1)
