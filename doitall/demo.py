@@ -48,7 +48,7 @@ clients_main.extend([{'type':'label','loc':'label','name':"-- Ollama --",'rank':
 clients_main.extend(client_ollama)
 txt_box=[]
 img_box=[]
-vid_box=[]
+vis_box=[]
 aud_box=[]
 for cl in clients_main:
     if cl['type'] == 'label':
@@ -57,6 +57,11 @@ for cl in clients_main:
         txt_box.append(cl)
     elif cl['type'] == 'image':
         img_box.append(cl)
+    elif cl['type'] == 'vision':
+        vis_box.append(cl)
+    elif cl['type'] == 'audio':
+        aud_box.append(cl)
+    
 
 
 
