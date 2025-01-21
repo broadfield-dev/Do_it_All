@@ -53,6 +53,9 @@ aud_box=[]
 for cl in clients_main:
     if cl['type'] == 'label':
         txt_box.append(cl)
+        img_box.append(cl)
+        vis_box.append(cl)
+        aud_box.append(cl)
     elif cl['type'] == 'text':
         txt_box.append(cl)
     elif cl['type'] == 'image':
