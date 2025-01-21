@@ -1,8 +1,8 @@
 import gradio as gr
-from doitall import gradio_theme as gt
 import random
 from doitall import main
-import gradio_sidebar as gs
+from doitall import gradio_theme as gt
+from doitall import gradio_sidebar as gs
 
 def isV(inp,is_=False):  # Verbose
     if is_==True:
