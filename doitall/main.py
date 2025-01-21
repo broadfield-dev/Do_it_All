@@ -695,7 +695,6 @@ class Do_It_All:
         history.extend([{'role':'user','content':prompt_in['text']}])
         self.out_hist=history.copy()
         self.thought_hist = [{'role':'assistant','content':'Starting RAG system...'}]
-        ############################  Return Prompt #######################################
         yield self.out_hist
 
         ############################   Files In   #########################################
@@ -854,11 +853,11 @@ class Do_It_All:
                         in_data[3]=str(ret)
                         self.thought_hist = [{'role':'assistant','content':'Compiling Report...'}]
                         yield self.out_hist + self.thought_hist
-                        history.extend(self.carry_hist[-1:])
+                        history.extend(self.carry_hist[])
                         history.extend([{'role':'system','content':'thought: I have responded with a report of my recent internet search, this step is COMPLETE'}])
                         in_data[6]=self.out_hist
                         yield from self.generate_stream(prompt, history,mod,10000,seed,role='INTERNET_SEARCH',data=in_data)
-                        history.extend(self.carry_hist[-1:])
+                        history.extend(self.carry_hist[])
                         self.out_hist=self.carry_hist
                         history+=self.carry_hist
                         if save_mem:
