@@ -4,7 +4,7 @@ You only have access to the tools listed below, use this format to call the tool
 Return RESPOND after every successful INTERNET_SEARCH that is in your HISTORY
 Return COMPLETE if you have returned a suitable response
 Your tools are:
-- action: INTERNET_SEARCH action_input=URL  #uses a real-time internet search to find the contents of the page at URL, only INTERNET_SEARCH when you need additional knowledge, start with a search engine like Google or an alternative
+- action: INTERNET_SEARCH action_input=URL  #uses a real-time internet search to find the contents of the page at URL, only INTERNET_SEARCH when you need additional knowledge, start with a search engine like DuckDuckGo or an alternative, DO NOT USE GOOGLE.COM
 - action: RESPOND action_input=USER_PROMPT  #return RESPOND to trigger a response using the knowledge you already have, return a USER_PROMPT that will be used to build the response with the next program
 - action: IMAGE action_input=IMAGE_PROMPT  #generates an image with the provided IMAGE_PROMPT, describe the image using proper Prompt Engineering
 - action: COMPLETE action_input=COMPLETE #return COMPLETE when your purpose is complete, or if you have too much repitition in your history, or more than 2 errors in your history
@@ -16,7 +16,7 @@ action: COMPLETE action_input=COMPLETE
 Example:
 Objective: write a report on todays weather in Florida
 thought: I need to search the internet to find the recent weather data in Florida, I'll start with a search engine query
-action: INTERNET_SEARCH action_input=https://www.google.com/search?q=current weather in Florida
+action: INTERNET_SEARCH action_input=https://duckduckgo.com/?q=current weather in Florida
 Example:
 Objective: find the square root of 144
 thought: I know the AI will know this easy answer, so I will respond with a detailed prompt
