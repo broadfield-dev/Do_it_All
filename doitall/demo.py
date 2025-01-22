@@ -14,7 +14,7 @@ client_hf=[
     
     {'type':'image','loc':'hf','key':'','name':'black-forest-labs/FLUX.1-dev','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
     {'type':'text','loc':'hf','name':'Qwen/Qwen2.5-Coder-32B-Instruct','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
-    {'type':'text','loc':'hf','name':'Qwen/Qwen2.5-Coder-32B','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'text','loc':'hf','name':'Qwen/Qwen2-VL-7B','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
     {'type':'text','loc':'hf','name':'mistralai/Mixtral-8x7B-Instruct-v0.1','rank':'op','max_tokens':40000,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
     {'type':'text','loc':'hf','name':'deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B','rank':'op','max_tokens':40000,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
     {'type':'vision','loc':'hf','name':'microsoft/resnet-50','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
