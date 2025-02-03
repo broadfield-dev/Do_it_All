@@ -4,6 +4,7 @@ import datetime
 import requests
 import random
 from doitall import prompts
+from doitall.addons import web_search as ws
 import uuid
 import json
 import bs4
@@ -161,7 +162,7 @@ class RagClient:
             )
             print("Loaded")
             return results
-        else: return ["No memories returned in response to possible COMPLETE"]
+        else: return ["No memories returned in response"]
     '''def view_collection(self,col_dir=""):
         emb_fn=HuggingFaceEmbeddings(model_name=self.model_name)
         client = chromadb.PersistentClient(path=self.clientDir)
@@ -180,7 +181,10 @@ class Do_It_All:
         self.merm_html="""**CONTENT**"""    
         self.html_html='''**CONTENT**"'''
         self.seed_val=1
-        self.clients = clients
+        self.txt_clients = clients['txt']
+        self.img_clients = clients['img']
+        self.vis_clients = clients['vis']
+        self.aud_clients = clients['aud']
         self.roles = []
         self.carry_hist = []
         self.collection_list=[]
@@ -195,9 +199,9 @@ class Do_It_All:
         rag=RagClient(rag_dir=self.persist_dir,col_rag=rag_col)
         rag.view_collection(col_dir=rag_col)
         
-    def gen_im(self,prompt,seed):
+    def gen_im(self,prompt,seed, im_mod):
         isV('generating image', True)
-        im_client=InferenceClient(self.clients[0]['name'])
+        im_client=InferenceClient(self.img_clients[im_mod]['name'])
         image_out = im_client.text_to_image(prompt=prompt,height=256,width=256,num_inference_steps=10,seed=seed)
         output=f'{uuid.uuid4()}.png'
         image_out.save(output)
@@ -207,8 +211,7 @@ class Do_It_All:
     def compress_data(self,c,purpose, history,mod,tok,seed,data):
         isV(data)
         resp=[None,]
-        #if not data: data=[];data[0]="NONE"
-        seed=random.randint(1,1000000000)
+        #seed=random.randint(1,1000000000)
         isV (c)
         divr=int(c)/self.MAX_HISTORY
         divi=int(divr)+1 if divr != int(divr) else int(divr)
@@ -218,7 +221,6 @@ class Do_It_All:
         isV (f'divi:: {divi}')
         task1="refine this data"
         out = []
-        #out=""
         s=0
         e=chunk
         isV(f'e:: {e}')
@@ -254,7 +256,8 @@ class Do_It_All:
         try:
             if url != "" and url != None:    
                 out = []
-                source = requests.get(url)
+                headers = { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:82.0) Gecko/20100101 Firefox/82.0' } 
+                source = requests.get(url, headers=headers)
                 isV('status: ', source.status_code)
                 if source.status_code ==200:
                     soup = bs4.BeautifulSoup(source.content,'lxml')
@@ -290,8 +293,8 @@ class Do_It_All:
 
         
     def format_prompt(self,message, mod, system):
-        eos=f"{self.clients[int(mod)]['schema']['eos']}\n"
-        bos=f"{self.clients[int(mod)]['schema']['bos']}\n"
+        eos=f"{self.txt_clients[int(mod)]['schema']['eos']}\n"
+        bos=f"{self.txt_clients[int(mod)]['schema']['bos']}\n"
         prompt=""
         prompt+=bos
         prompt+=system
@@ -304,8 +307,8 @@ class Do_It_All:
     
 
     def format_ollama_prompt(self,message, mod, system):
-        eos=f"{self.clients[int(mod)]['schema']['eos']}\n"
-        bos=f"{self.clients[int(mod)]['schema']['bos']}\n"
+        eos=f"{self.txt_clients[int(mod)]['schema']['eos']}\n"
+        bos=f"{self.txt_clients[int(mod)]['schema']['bos']}\n"
         prompt=""
         prompt+=bos[0]
         prompt+=system
@@ -340,15 +343,16 @@ class Do_It_All:
         return(json.dumps(tok_count,indent=4))
 
     def generate(self,prompt,history,mod=2,tok=4000,seed=1,role="RESPOND",data=None):
+        print(seed)
         isV(role)
         hist_in=self.out_hist
         current_time=str(datetime.datetime.now())
         timeline=str(data[4])
         self.roles=[{'name':'MANAGER','system_prompt':str(prompts.MANAGER.replace("**HISTORY**",str(hist_in)).replace("**ADVICE**",data[1].replace('<|im_start|>','').replace('<|im_end|>','')))},
                     {'name':'ADVISOR','system_prompt':str(prompts.ADVISOR.replace("**CURRENT_TIME**",current_time).replace("**TIMELINE**",timeline).replace("**HISTORY**",str(history)))},
-                {'name':'PATHMAKER','system_prompt':str(prompts.PATH_MAKER.replace('**STEPS**',str(data[2])).replace("**CURRENT_OR_NONE**",timeline).replace("**PROMPT**",json.dumps(data[0],indent=4)).replace("**HISTORY**",str(history)))},
-                {'name':'COMPRESS','system_prompt':str(prompts.COMPRESS.replace("**TASK**",str(prompt)).replace("**KNOWLEDGE**",str(data[0])).replace("**HISTORY**",str(history)))},
-                ]
+                    {'name':'PATHMAKER','system_prompt':str(prompts.PATH_MAKER.replace('**STEPS**',str(data[2])).replace("**CURRENT_OR_NONE**",timeline).replace("**PROMPT**",json.dumps(data[0],indent=4)).replace("**HISTORY**",str(history)))},
+                    {'name':'COMPRESS','system_prompt':str(prompts.COMPRESS.replace("**TASK**",str(prompt)).replace("**KNOWLEDGE**",str(data[0])).replace("**HISTORY**",str(history)))},
+                    ]
         roles = self.roles
         g=True
         for roless in roles:
@@ -372,10 +376,10 @@ class Do_It_All:
         )
         output = ""
 
-        if self.clients[int(mod)]['loc'] == 'hf':
+        if self.txt_clients[int(mod)]['loc'] == 'hf':
             
-            isV("Running ", self.clients[int(mod)]['name'])
-            self.client=InferenceClient(self.clients[int(mod)]['name'])
+            isV("Running ", self.txt_clients[int(mod)]['name'])
+            self.client=InferenceClient(self.txt_clients[int(mod)]['name'])
             formatted_prompt = self.format_prompt(prompt, mod, system_prompt)
             stream = self.client.text_generation(formatted_prompt, **self.generate_kwargs, stream=True, details=True, return_full_text=True)
             if role in ['RESPOND','INTERNET_SEARCH']:
@@ -387,12 +391,12 @@ class Do_It_All:
                     output += response.token.text
                 yield output
                 
-        elif self.clients[int(mod)]['loc'] == 'ollama':
+        elif self.txt_clients[int(mod)]['loc'] == 'ollama':
             isV("Running ", role)
 
             formatted_prompt = self.format_ollama_prompt(prompt, mod, system_prompt)
             stream = chat(
-                model=self.clients[int(mod)]['name'],
+                model=self.txt_clients[int(mod)]['name'],
                 messages=[{'role': 'system', 'content': system_prompt},{'role':'user','content':prompt}],
                 stream=True,
             )
@@ -401,10 +405,10 @@ class Do_It_All:
                 output += response['message']['content']
                 print(response['message']['content'], end='', flush=True)
             yield output    
-        elif self.clients[int(mod)]['loc'] == 'openai':
+        elif self.txt_clients[int(mod)]['loc'] == 'openai':
             client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
             stream = client.chat.completions.create(
-            model=self.clients[int(mod)]['name'],
+            model=self.txt_clients[int(mod)]['name'],
             store=True,
             stream=True,
             messages=[{'role': 'system', 'content': system_prompt},{'role':'user','content':prompt}],
@@ -417,20 +421,20 @@ class Do_It_All:
                     output += chunk.choices[0].delta.content
             total_output_tokens += count_tokens(output)
             yield output
-            tok_cnt = self.token_cost(output,total_input_tokens,total_output_tokens,self.clients[int(mod)]['ppt'])
+            tok_cnt = self.token_cost(output,total_input_tokens,total_output_tokens,self.txt_clients[int(mod)]['ppt'])
 
 
             self.carry_hist= hist_in+[{'role':'assistant','content':output + "\n\njson```\n" + tok_cnt + "\n```"}]
             #self.history += [{'role':'assistant','content':output}]
 
 
-        elif self.clients[int(mod)]['loc'] == 'google':
+        elif self.txt_clients[int(mod)]['loc'] == 'google':
             isV("Running ", role)
             client = genai.Client(api_key=gemini_key)
             formatted_prompt = self.format_prompt(prompt, mod, system_prompt)
 
             response = client.models.generate_content_stream(
-                model=self.clients[int(mod)]['name'],
+                model=self.txt_clients[int(mod)]['name'],
                 contents=prompt,
                 config=types.GenerateContentConfig(
                     system_instruction=system_prompt,
@@ -441,9 +445,10 @@ class Do_It_All:
             total_input_tokens = count_tokens(system_prompt) + count_tokens(prompt)  # Count tokens for input
             total_output_tokens = 0  # Initialize output token counter
             for chunk in response:
-                output += chunk.text
+                if type(chunk) != type(None):
+                    output += chunk.text
             total_output_tokens += count_tokens(output)
-            tok_cnt = self.token_cost(output,total_input_tokens,total_output_tokens,self.clients[int(mod)]['ppt'])
+            tok_cnt = self.token_cost(output,total_input_tokens,total_output_tokens,self.txt_clients[int(mod)]['ppt'])
 
             yield output
             yield history
@@ -451,6 +456,7 @@ class Do_It_All:
 
                    
     def generate_stream(self,prompt,history,mod=2,tok=4000,seed=1,role="RESPOND",data=None):
+        print(seed)
         isV(role)
         hist_in=self.out_hist
         current_time=str(datetime.datetime.now())
@@ -483,10 +489,10 @@ class Do_It_All:
         output = ""
         total_input_tokens = count_tokens(system_prompt) + count_tokens(prompt)  # Count tokens for input
         total_output_tokens = 0  # Initialize output token counter
-        if self.clients[int(mod)]['loc'] == 'hf':
+        if self.txt_clients[int(mod)]['loc'] == 'hf':
             
-            isV("Running ", self.clients[int(mod)]['name'])
-            self.client=InferenceClient(self.clients[int(mod)]['name'],token=hf_token)
+            isV("Running ", self.txt_clients[int(mod)]['name'])
+            self.client=InferenceClient(self.txt_clients[int(mod)]['name'],token=hf_token)
             formatted_prompt = self.format_prompt(prompt, mod, system_prompt)
             stream = self.client.text_generation(formatted_prompt, **self.generate_kwargs, stream=True, details=True, return_full_text=True)
             if role in ['RESPOND','INTERNET_SEARCH']:
@@ -499,12 +505,12 @@ class Do_It_All:
                     yield hist_in+[{'role':'assistant','content':output.replace('<|im_start|>','').replace('<|im_end|>','')}]
             self.carry_hist= hist_in+[{'role':'assistant','content':output.replace('<|im_start|>','').replace('<|im_end|>','')}]
 
-        elif self.clients[int(mod)]['loc'] == 'ollama':
+        elif self.txt_clients[int(mod)]['loc'] == 'ollama':
             isV("Running ", role)
 
             formatted_prompt = self.format_ollama_prompt(prompt, mod, system_prompt)
             stream = chat(
-                model=self.clients[int(mod)]['name'],
+                model=self.txt_clients[int(mod)]['name'],
                 messages=[{'role': 'system', 'content': system_prompt},{'role':'user','content':prompt}],
                 stream=True,
             )
@@ -514,10 +520,10 @@ class Do_It_All:
                 #print(response['message']['content'], end='', flush=True)
                 yield output
             
-        elif self.clients[int(mod)]['loc'] == 'openai':
+        elif self.txt_clients[int(mod)]['loc'] == 'openai':
             client = OpenAI(api_key=openai_key)
             stream = client.chat.completions.create(
-            model=self.clients[int(mod)]['name'],
+            model=self.txt_clients[int(mod)]['name'],
             #store=True,
             stream=True,
             messages=[{'role': 'system', 'content': system_prompt},{'role':'user','content':prompt}],
@@ -534,12 +540,12 @@ class Do_It_All:
             
             
             total_output_tokens += count_tokens(output)
-            tok_count = self.token_cost(output,total_input_tokens,total_output_tokens,self.clients[int(mod)]['ppt'])
+            tok_count = self.token_cost(output,total_input_tokens,total_output_tokens,self.txt_clients[int(mod)]['ppt'])
 
             yield hist_in+[{'role':'assistant','content':output}]+[{'role': 'assistant', 'content':f'```json\n{tok_count}\n```'}]
             self.carry_hist= hist_in+[{'role':'assistant','content':output}]
      
-        elif self.clients[int(mod)]['loc'] == 'google':
+        elif self.txt_clients[int(mod)]['loc'] == 'google':
             output = ""
             total_output_tokens = 0
 
@@ -547,7 +553,7 @@ class Do_It_All:
             #formatted_prompt = self.format_prompt(prompt, mod, system_prompt)
 
             response = client.models.generate_content_stream(
-                model=self.clients[int(mod)]['name'],
+                model=self.txt_clients[int(mod)]['name'],
                 contents=prompt,
                 config=types.GenerateContentConfig(
                     system_instruction=system_prompt,
@@ -565,7 +571,7 @@ class Do_It_All:
                 yield hist_in + [{'role': 'assistant', 'content': output}]
  
             total_output_tokens += count_tokens(output)
-            tok_count = self.token_cost(output,total_input_tokens,total_output_tokens,self.clients[int(mod)]['ppt'])
+            tok_count = self.token_cost(output,total_input_tokens,total_output_tokens,self.txt_clients[int(mod)]['ppt'])
             yield hist_in+[{'role':'assistant','content':output}]+[{'role': 'assistant', 'content':f'```json\n{tok_count}\n```'}]
             self.carry_hist= hist_in+[{'role':'assistant','content':output}]
 
@@ -669,10 +675,21 @@ class Do_It_All:
                 images=""
             text.append({"page":i,"text":page.extract_text(),"images":images})
         return text
-               
-    def agent(self,prompt_in,history,mod=2,tok_in="",rand_seed=True,seed=1,max_thought=5,save_mem=False,recall_mem=False,rag_col=False):
+    
+    def save_file(self,input):
+        if not os.path.isfile('./chat_dummp.txt'):
+            out_chat=""
+        else:
+            with open('./chat_dump.txt','r') as f:
+                out_chat=f.read()
+            f.close()
+        out_chat+=input[-1]['content'] + '/n'
+        with open('./chat_dump.txt','w') as f:
+            f.write(out_chat)   
+
+    def agent(self,prompt_in,history,mod=2,im_mod=1,tok_in="",rand_seed=True,seed=1,max_thought=5,save_mem=False,recall_mem=False,rag_col=False):
         self.out_hist=[]
- 
+        print(seed)
         isV(prompt_in,True)
         isV(('mod ',mod),True)
                 
@@ -683,7 +700,8 @@ class Do_It_All:
         fn=""
         com=""
         go=True
-        MAX_DATA=int(self.clients[int(mod)]['max_tokens'])*2
+        save_to_file=False
+        MAX_DATA=int(self.txt_clients[int(mod)]['max_tokens'])*2
         cnt=max_thought
         in_data[0]=prompt_in
         file_box=[]
@@ -710,9 +728,9 @@ class Do_It_All:
                     file_box.extend([{'doc_name':file_in,'content':file.read()}])
                     file.close()
             elif str(file_in).endswith(('.pdf')):
+                pdf_json=self.read_pdf(str(file_in))
+                file_box.extend([{'doc_name':file_in,'content':'PDF_CONTENT'+json.dumps(pdf_json,indent=1)}])    
                 if save_mem:
-                    pdf_json=self.read_pdf(str(file_in))
-                    file_box.extend([{'doc_name':file_in,'content':'PDF_CONTENT'+json.dumps(pdf_json,indent=1)}])    
                     rag.save_memory(file_in=json.dumps(file_box,indent=4),rag_col=rag_col)
         if len(str(file_box)) > self.MAX_HISTORY:
             file_out = self.compress_data(len(str(file_box)),prompt, str(file_box),mod,10000,seed,in_data)
@@ -810,7 +828,6 @@ class Do_It_All:
                             print("COMPLETE")
                             print(self.out_hist)
                             yield self.out_hist + self.thought_hist
-
                             go=False
                             break
                         else:fn="NONE"
@@ -830,6 +847,9 @@ class Do_It_All:
                         #print('self.out_hist, ,', self.out_hist)
                         self.out_hist=self.carry_hist
                         history+=self.carry_hist
+                        if save_to_file:
+                            self.save_file(self.out_hist)
+
                         if save_mem:
                             print("Saving RAG")
                             print(self.carry_hist)
@@ -839,7 +859,7 @@ class Do_It_All:
                         yield self.out_hist + self.thought_hist
                         isV('IMAGE called',True)
                         prompt_im=com
-                        out_im=self.gen_im(prompt_im,seed)
+                        out_im=self.gen_im(prompt_im,seed, im_mod)
                         self.out_hist.extend(out_im)
                         #print(self.out_hist)
                         yield self.out_hist
@@ -850,8 +870,8 @@ class Do_It_All:
                         yield self.out_hist + self.thought_hist
 
                         isV('INTERNET_SEARCH called',True)
-                        ret = self.find_all(prompt, history, com,mod,10000,seed,data=in_data)
-                        in_data[3]=str(ret)
+                        ret = ws.run_o(url=com)
+                        in_data[3]=str(list(ret)[0])
                         self.thought_hist = [{'role':'assistant','content':'Compiling Report...'}]
                         yield self.out_hist + self.thought_hist
                         history.extend(self.carry_hist)
@@ -860,6 +880,7 @@ class Do_It_All:
                         yield from self.generate_stream(prompt, history,mod,10000,seed,role='INTERNET_SEARCH',data=in_data)
                         history.extend(self.carry_hist)
                         self.out_hist=self.carry_hist
+                        self.save_file(self.out_hist)
                         if save_mem:
                             print("Saving RAG")
                             rag.save_memory(file_in=self.out_hist,rag_col=rag_col)
