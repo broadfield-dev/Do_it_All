@@ -3,6 +3,7 @@ import random
 from doitall import main
 from doitall import gradio_theme as gt
 from doitall import gradio_sidebar as gs
+from doitall.addons import html_screensot as ss
 
 def isV(inp,is_=False):  # Verbose
     if is_==True:
@@ -13,17 +14,25 @@ clients_main=[]
 client_hf=[
     
     {'type':'image','loc':'hf','key':'','name':'black-forest-labs/FLUX.1-dev','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'image','loc':'hf','key':'','name':'ostris/Flex.1-alpha','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
     {'type':'text','loc':'hf','name':'Qwen/Qwen2.5-Coder-32B-Instruct','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'text','loc':'hf','name':'Qwen/Qwen2.5-72B-Instruct','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'text','loc':'hf','name':'Qwen/QwQ-32B-Preview','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
     {'type':'text','loc':'hf','name':'mistralai/Mixtral-8x7B-Instruct-v0.1','rank':'op','max_tokens':40000,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
+    {'type':'text','loc':'hf','name':'mistralai/Mixtral-7B-Instruct-v0.2','rank':'op','max_tokens':40000,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
+    {'type':'text','loc':'hf','name':'mistralai/Mixtral-7B-Instruct-v0.3','rank':'op','max_tokens':40000,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
     {'type':'text','loc':'hf','name':'deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B','rank':'op','max_tokens':40000,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
-    {'type':'vision','loc':'hf','name':'microsoft/resnet-50','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'text','loc':'hf','name':'deepseek-ai/DeepSeek-R1-Distill-Qwen-32B','rank':'op','max_tokens':40000,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
+    {'type':'text','loc':'hf','name':'meta-llama/Llama-3.1-8B-Instruct','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'text','loc':'hf','name':'meta-llama/Llama-3,2-3B-Instruct','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'text','loc':'hf','name':'meta-llama/Llama-3.3-70B-Instruct','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'text','loc':'hf','name':'google/gemma-2-2b-it','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'text','loc':'hf','name':'google/gemma-2-9b-it','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'text','loc':'hf','name':'google/gemma-2-27b-it','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'text','loc':'hf','name':'microsoft/Phi-3-mini-4k-instruct','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'text','loc':'hf','name':'microsoft/Phi-3.5-mini-instruct','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
 ]
-client_gradio=[
-    {'type':'text','loc':'gradio','name':'bigscience/bloomz','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
-]
-client_ollama=[
-    {'type':'text','loc':'ollama','name':'hf.co/bartowski/SmallThinker-3B-Preview-GGUF:IQ4_NL','rank':'op','max_tokens':16384,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
-]
+
 client_openai=[
     {'type':'text','loc':'openai','name':"gpt-4o-mini",'rank':'op','max_tokens':128000,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
     {'type':'audio','loc':'openai','name':"whisper-1",'rank':'op','max_tokens':128000,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
@@ -36,6 +45,12 @@ client_google=[
     {'type':'text','loc':'google','name':"gemini-exp-1206",'rank':'op','max_tokens':128000,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
     {'type':'text','loc':'google','name':"gemini-2.0-flash-thinking-exp-1219",'rank':'op','max_tokens':64000,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
     {'type':'text','loc':'google','name':"learnlm-1.5-pro-experimental",'rank':'op','max_tokens':128000,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
+]
+client_gradio=[
+    {'type':'text','loc':'gradio','name':'bigscience/bloomz','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+]
+client_ollama=[
+    {'type':'text','loc':'ollama','name':'hf.co/bartowski/SmallThinker-3B-Preview-GGUF:IQ4_NL','rank':'op','max_tokens':16384,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
 ]
 clients_main.extend([{'type':'label','loc':'label','name':"-- Huggingface --",'rank':'','max_tokens':0,'schema':{'bos':'','eos':''},'ppt':'None'}])
 clients_main.extend(client_hf)
@@ -65,11 +80,8 @@ for cl in clients_main:
         vis_box.append(cl)
     elif cl['type'] == 'audio':
         aud_box.append(cl)
-    
 
-
-
-clients_out=txt_box
+clients_out={'txt':txt_box, 'img':img_box, 'vis':vis_box, 'aud':aud_box}
 
 do_it=main.Do_It_All(clients=clients_out)
 
@@ -86,7 +98,6 @@ def load_html(inp):
         return outp
     else:
         pass
-
 
 def check_ch(inp,inp_val):
     if inp == True and inp_val <= 1:
@@ -126,6 +137,9 @@ span.svelte-5ncdh7{
     box-shadow:#fffcfc 0px 0px 5px 2px;
     margin: 5px;
 } """
+def take_ss(html_str):
+    return ss.html_ss(html_str)
+
 def main():
     with gr.Blocks(head=gs.head,theme=gt.theme,css=add_css+gs.css) as ux:
         gr.HTML(gs.leftbar)
@@ -148,7 +162,8 @@ def main():
             seed_ch=gr.Checkbox(label="Random",value=False)
             seed=gr.Number(label="Seed",step=1,precision=0,value=do_it.seed_val,interactive=True)
 
-            mod_c=gr.Dropdown(label="Chat Model",choices=[n['name'] for n in do_it.clients],value='Qwen/Qwen2.5-Coder-32B-Instruct',type='index')
+            mod_c=gr.Dropdown(label="Chat Model",choices=[n['name'] for n in do_it.txt_clients],value='Qwen/Qwen2.5-Coder-32B-Instruct',type='index')
+            mod_im=gr.Dropdown(label="Image Model",choices=[n['name'] for n in do_it.img_clients],value='black-forest-labs/FLUX.1-dev',type='index')
             tok_in=gr.Textbox(label='HF TOKEN', visible=False)
 
             max_loop=gr.Slider(label="Max loop", minimum=1,maximum=10,value=3,step=1)
@@ -160,14 +175,17 @@ def main():
             submit_b = gr.Button()
             stop_b = gr.Button("Stop")
             clear = gr.ClearButton([chatbot])
-            #vector_btn=gr.Button("Load 3d Vectors")
-
+            ss_btn=gr.Button("Save Image")
+        ss_img=gr.Image()
         vector_html=gr.HTML( """<div style='height:600px;width:600px;'></div>""")
+
+
         ux.load(check_box,None,seed_ch).then(upd_collection,None,rag_col)
         #vector_btn.click(upd_3d_view,rag_col,vector_html)
+        ss_btn.click(take_ss, chatbot, ss_img)
         seed_ch.change(check_ch,[seed_ch,seed],seed)
-        sub_b = submit_b.click(check_ch,[seed_ch,seed],seed).then(do_it.agent, [prompt,chatbot,mod_c,tok_in,seed_ch,seed,max_loop,save_mem,recall_mem,rag_col],[chatbot]).then(upd_collection,None,rag_col)
-        sub_p = prompt.submit(check_ch,[seed_ch,seed],seed).then(do_it.agent, [prompt,chatbot,mod_c,tok_in,seed_ch,seed,max_loop,save_mem,recall_mem,rag_col],[chatbot]).then(upd_collection,None,rag_col)
+        sub_b = submit_b.click(check_ch,[seed_ch,seed],seed).then(do_it.agent, [prompt,chatbot,mod_c,mod_im,tok_in,seed_ch,seed,max_loop,save_mem,recall_mem,rag_col],[chatbot]).then(upd_collection,None,rag_col)
+        sub_p = prompt.submit(check_ch,[seed_ch,seed],seed).then(do_it.agent, [prompt,chatbot,mod_c,mod_im,tok_in,seed_ch,seed,max_loop,save_mem,recall_mem,rag_col],[chatbot]).then(upd_collection,None,rag_col)
         
         stop_b.click(None,None,None, cancels=[sub_b,sub_p])
     ux.queue(default_concurrency_limit=20).launch(max_threads=40)
