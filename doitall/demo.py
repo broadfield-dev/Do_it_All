@@ -3,7 +3,7 @@ import random
 from doitall import main
 from doitall import gradio_theme as gt
 from doitall import gradio_sidebar as gs
-from doitall.addons import html_screensot as ss
+from doitall.addons import html_screenshot as ss
 
 def isV(inp,is_=False):  # Verbose
     if is_==True:
