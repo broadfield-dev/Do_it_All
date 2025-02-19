@@ -5,6 +5,7 @@ import requests
 import random
 from doitall import prompts
 from doitall.addons import web_search as ws
+from doitall.addons import file_handler as fh
 import uuid
 import json
 import bs4
@@ -176,7 +177,6 @@ def isV(inp,is_=False,type=""):  # Verbose
 
 class Do_It_All:
     def __init__(self,clients,persist_dir="./db"):
-        self.MAX_HISTORY=15000
         self.save_settings=[{}]
         self.merm_html="""**CONTENT**"""    
         self.html_html='''**CONTENT**"'''
@@ -209,6 +209,8 @@ class Do_It_All:
         return [{'role':'assistant','content': {'path':output}}]
 
     def compress_data(self,c,purpose, history,mod,tok,seed,data):
+        self.MAX_HISTORY=int(self.txt_clients[int(mod)]['max_tokens'])
+
         isV(data)
         resp=[None,]
         #seed=random.randint(1,1000000000)
@@ -225,9 +227,10 @@ class Do_It_All:
         e=chunk
         isV(f'e:: {e}')
         new_history=""
+        data_l=["none",]
         task = f'Compile this data to fulfill the task: {task1}, and complete the purpose: {purpose}\n'
         for z in range(divi):
-            data[0]=new_history
+            data_l[0]=new_history
             isV(f's:e :: {s}:{e}')
             hist = history[s:e]
             resp = self.generate(
@@ -237,9 +240,10 @@ class Do_It_All:
                 tok=int(tok),
                 seed=int(seed),
                 role='COMPRESS',
-                data=data,
+                data=data_l,
             )
-            resp_o = list(resp)[0]
+            #resp_o = list(resp)[0]
+            resp_o = resp
             new_history = resp_o
             isV (resp)
             out+=resp_o
@@ -251,6 +255,7 @@ class Do_It_All:
         return str(resp_o)
 
     def find_all(self,prompt,history, url,mod,tok,seed,data):
+        self.MAX_HISTORY=int(self.txt_clients[int(mod)]['max_tokens'])
         return_list=[]
         isV (f"trying URL:: {url}")        
         try:
@@ -347,10 +352,10 @@ class Do_It_All:
         isV(role)
         hist_in=self.out_hist
         current_time=str(datetime.datetime.now())
-        timeline=str(data[4])
+        #timeline=str(data[4])
         self.roles=[{'name':'MANAGER','system_prompt':str(prompts.MANAGER.replace("**HISTORY**",str(hist_in)).replace("**ADVICE**",data[1].replace('<|im_start|>','').replace('<|im_end|>','')))},
-                    {'name':'ADVISOR','system_prompt':str(prompts.ADVISOR.replace("**CURRENT_TIME**",current_time).replace("**TIMELINE**",timeline).replace("**HISTORY**",str(history)))},
-                    {'name':'PATHMAKER','system_prompt':str(prompts.PATH_MAKER.replace('**STEPS**',str(data[2])).replace("**CURRENT_OR_NONE**",timeline).replace("**PROMPT**",json.dumps(data[0],indent=4)).replace("**HISTORY**",str(history)))},
+                    {'name':'ADVISOR','system_prompt':str(prompts.ADVISOR.replace("**CURRENT_TIME**",current_time).replace("**TIMELINE**",str(data[4])).replace("**HISTORY**",str(history)))},
+                    {'name':'PATHMAKER','system_prompt':str(prompts.PATH_MAKER.replace('**STEPS**',str(data[2])).replace("**CURRENT_OR_NONE**",str(data[4])).replace("**PROMPT**",json.dumps(data[0],indent=4)).replace("**HISTORY**",str(history)))},
                     {'name':'COMPRESS','system_prompt':str(prompts.COMPRESS.replace("**TASK**",str(prompt)).replace("**KNOWLEDGE**",str(data[0])).replace("**HISTORY**",str(history)))},
                     ]
         roles = self.roles
@@ -461,6 +466,8 @@ class Do_It_All:
         hist_in=self.out_hist
         current_time=str(datetime.datetime.now())
         timeline=str(data[4])
+
+
         self.roles=[
                 {'name':'INTERNET_SEARCH','system_prompt':str(prompts.INTERNET_SEARCH.replace("**TASK**",str(prompt)).replace("**KNOWLEDGE**",str(data[3])).replace("**HISTORY**",str(history)))},
                 {'name':'RESPOND','system_prompt':str(prompts.RESPOND.replace("**CURRENT_TIME**",current_time).replace("**HISTORY**",str(history)).replace("**TIMELINE**",timeline))},
@@ -471,12 +478,16 @@ class Do_It_All:
             if g==True:
                 if roless['name'] == role:
                     system_prompt=roless['system_prompt']
+                    total_input_tokens = count_tokens(system_prompt) + count_tokens(prompt) # Count tokens for input
+                    if tok-int(total_input_tokens * 1.5) < 0:
+                        in_data=""
+                        system_prompt = self.compress_data(len(str(system_prompt)),prompt, str(system_prompt),mod,6000,seed,in_data)
                     isV(system_prompt)
                     g=False
                 else: system_prompt = ""
-                    
-        
-        if tok==None:isV('Error: tok value is None')
+        total_input_tokens = (count_tokens(system_prompt) + count_tokens(prompt)) # Count tokens for input
+        #if tok==None:isV('Error: tok value is None')
+        tok=tok-int(total_input_tokens * 1.5)
         isV("tok",tok)
         self.generate_kwargs = dict(
             temperature=0.99,
@@ -487,7 +498,6 @@ class Do_It_All:
             seed=seed,
         )
         output = ""
-        total_input_tokens = count_tokens(system_prompt) + count_tokens(prompt)  # Count tokens for input
         total_output_tokens = 0  # Initialize output token counter
         if self.txt_clients[int(mod)]['loc'] == 'hf':
             
@@ -688,6 +698,7 @@ class Do_It_All:
             f.write(out_chat)   
 
     def agent(self,prompt_in,history,mod=2,im_mod=1,tok_in="",rand_seed=True,seed=1,max_thought=5,save_mem=False,recall_mem=False,rag_col=False):
+        self.MAX_HISTORY=int(self.txt_clients[int(mod)]['max_tokens'])
         self.out_hist=[]
         print(seed)
         isV(prompt_in,True)
@@ -701,7 +712,6 @@ class Do_It_All:
         com=""
         go=True
         save_to_file=False
-        MAX_DATA=int(self.txt_clients[int(mod)]['max_tokens'])*2
         cnt=max_thought
         in_data[0]=prompt_in
         file_box=[]
@@ -751,8 +761,9 @@ class Do_It_All:
 
             in_data[5]=mems
             history.extend([{'role':'system','content':"RAG SYSTEM returned symantic search result : " + str(mems)}])
+            max_tokens=int(self.txt_clients[int(mod)]['max_tokens'])
 
-            print(mems)
+            #print(mems)
             if max_thought==0:
                 in_data[2]="Unlimited"
             else:
@@ -839,7 +850,8 @@ class Do_It_All:
 
                         in_data[6]=self.out_hist
                         #print(self.out_hist)
-                        yield from self.generate_stream(prompt, history,mod,10000,seed,role='RESPOND',data=in_data)
+                        
+                        yield from self.generate_stream(prompt, history,mod,max_tokens,seed,role='RESPOND',data=in_data)
 
                        
                         history.extend(self.carry_hist[-1:])
@@ -870,14 +882,22 @@ class Do_It_All:
                         yield self.out_hist + self.thought_hist
 
                         isV('INTERNET_SEARCH called',True)
-                        ret = ws.run_o(url=com)
+                        
+                        if str(com).endswith(('.pdf')):
+                            pdf_json = fh.download_pdf_to_bytesio(str(com))
+                            #pdf_json=self.read_pdf(str(com))
+                            ret = [{'doc_name':com,'PDF_CONTENT':json.dumps(pdf_json,indent=1)}]
+                            print(ret)
+                        else:
+                            ret = ws.run_o(url=com)
+
                         in_data[3]=str(list(ret)[0])
                         self.thought_hist = [{'role':'assistant','content':'Compiling Report...'}]
                         yield self.out_hist + self.thought_hist
                         history.extend(self.carry_hist)
                         history.extend([{'role':'system','content':'thought: I have responded with a report of my recent internet search, this step is COMPLETE'}])
                         in_data[6]=self.out_hist
-                        yield from self.generate_stream(prompt, history,mod,10000,seed,role='INTERNET_SEARCH',data=in_data)
+                        yield from self.generate_stream(prompt, history,mod,max_tokens,seed,role='INTERNET_SEARCH',data=in_data)
                         history.extend(self.carry_hist)
                         self.out_hist=self.carry_hist
                         self.save_file(self.out_hist)
