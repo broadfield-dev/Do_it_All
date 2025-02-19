@@ -384,7 +384,7 @@ class Do_It_All:
         if self.txt_clients[int(mod)]['loc'] == 'hf':
             
             isV("Running ", self.txt_clients[int(mod)]['name'])
-            self.client=InferenceClient(self.txt_clients[int(mod)]['name'])
+            self.client=InferenceClient(self.txt_clients[int(mod)]['name'],token=hf_token)
             formatted_prompt = self.format_prompt(prompt, mod, system_prompt)
             stream = self.client.text_generation(formatted_prompt, **self.generate_kwargs, stream=True, details=True, return_full_text=True)
             if role in ['RESPOND','INTERNET_SEARCH']:
