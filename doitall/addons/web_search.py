@@ -1,4 +1,5 @@
 from playwright.sync_api import sync_playwright
+import gradio as gr
 from playwright.async_api import async_playwright
 import asyncio
 
@@ -49,3 +50,10 @@ def web_search(prompt,history, url,mod,tok,seed,data):
         except Exception as e:
             history.extend([{'role':'system','content':"observation: I need to trigger a search using the following syntax:\naction: INTERNET_SEARCH action_input=URL\n"}])
             return history
+'''with gr.Blocks() as app:
+    inp = gr.Textbox()
+    btn = gr.Button()
+    outp = gr.Textbox(lines=10)
+    outj = gr.JSON()
+    btn.click(run_o,inp,[outj])
+app.launch()'''
