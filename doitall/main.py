@@ -31,7 +31,8 @@ import tiktoken
 from dotenv import load_dotenv
 
 load_dotenv()
-hf_token=os.getenv('HF_KEY')
+hf_token=os.getenv('HF_KEY', "")
+
 openai_key=os.getenv('OPENAI_API_KEY')
 gemini_key=os.getenv('GEMINI_API_KEY')
 
