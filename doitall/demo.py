@@ -3,7 +3,7 @@ import random
 from doitall import main
 from doitall import gradio_theme as gt
 from doitall import gradio_sidebar as gs
-from doitall.addons import html_screenshot as ss
+from doitall.addons import html_screensot as ss
 
 def isV(inp,is_=False):  # Verbose
     if is_==True:
@@ -13,9 +13,9 @@ def isV(inp,is_=False):  # Verbose
 clients_main=[]
 client_hf=[
     
-    {'type':'image','loc':'hf','key':'','name':'black-forest-labs/FLUX.1-dev','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'image','loc':'hf','key':'','name':'black-forest-labs/FLUX.1-dev','rank':'op','max_tokens':16000,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
     {'type':'image','loc':'hf','key':'','name':'ostris/Flex.1-alpha','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
-    {'type':'text','loc':'hf','name':'Qwen/Qwen2.5-Coder-32B-Instruct','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'text','loc':'hf','name':'Qwen/Qwen2.5-Coder-32B-Instruct','rank':'op','max_tokens':16000,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
     {'type':'text','loc':'hf','name':'Qwen/Qwen2.5-72B-Instruct','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
     {'type':'text','loc':'hf','name':'Qwen/QwQ-32B-Preview','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
     {'type':'text','loc':'hf','name':'mistralai/Mixtral-8x7B-Instruct-v0.1','rank':'op','max_tokens':40000,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
@@ -139,7 +139,8 @@ span.svelte-5ncdh7{
 } """
 def take_ss(html_str):
     return ss.html_ss(html_str)
-
+def clear_chat_on_load():
+    return []
 def main():
     with gr.Blocks(head=gs.head,theme=gt.theme,css=add_css+gs.css) as ux:
         gr.HTML(gs.leftbar)
@@ -166,7 +167,7 @@ def main():
             mod_im=gr.Dropdown(label="Image Model",choices=[n['name'] for n in do_it.img_clients],value='black-forest-labs/FLUX.1-dev',type='index')
             tok_in=gr.Textbox(label='HF TOKEN', visible=False)
 
-            max_loop=gr.Slider(label="Max loop", minimum=1,maximum=10,value=3,step=1)
+            max_loop=gr.Slider(label="Max loop", minimum=1,maximum=10,value=5,step=1)
             with gr.Row():
                 rag_col=gr.Dropdown(label="Collection Name",choices=[],allow_custom_value=True,value='memory',interactive=True)
                 with gr.Column():
@@ -180,7 +181,7 @@ def main():
         vector_html=gr.HTML( """<div style='height:600px;width:600px;'></div>""")
 
 
-        ux.load(check_box,None,seed_ch).then(upd_collection,None,rag_col)
+        ux.load(check_box,None,seed_ch).then(upd_collection,None,rag_col).then(clear_chat_on_load,None,chatbot)
         #vector_btn.click(upd_3d_view,rag_col,vector_html)
         ss_btn.click(take_ss, chatbot, ss_img)
         seed_ch.change(check_ch,[seed_ch,seed],seed)
