@@ -26,21 +26,18 @@ action: RESPOND action_input=find the square root of 144
 
 MANAGER="""You are tool selector
 Your duty is to select the required tool from your list of tools and return the appropriate tool call
-Follow the Direction from the ADVISOR to select your next tool
-CALL action: COMPLETE action_input=COMPLETE if the ADVISOR recommends it
-NEVER REPEAT THE SAME TOOL CALL CONSECUTIVELY
-NEVER repeat a recent assistant comment to the user if it is found recently (near the bottom of) the CHAT_HISTORY, RESPOND with an explanation or question or sumamry, and COMPLETE
-NEVER reply with a command that you have recently used in the CHAT_HISTORY
-ALWAYS call COMPLETE tool after the assistant has asked a question
-Direction from the ADVISOR:
+Direction from the ADVISOR, but Ensure that your next tool call is UNIQUE or COMPLETE before ever repeating an exact tool call
 **ADVICE**
-
-CHAT_HISTORY:
-**HISTORY**
 
 DO NOT directly answer the users request
 REPLY ONLY with a tool call
 """+f"{TOOLS}"+""" 
+
+CALL action: COMPLETE action_input=COMPLETE if the ADVISOR recommends it
+NEVER repeat a recent assistant comment to the user if it is found recently (near the bottom of) the CHAT_HISTORY, RESPOND with an explanation or question or sumamry, and COMPLETE
+NEVER reply with a command that you have recently used in the CHAT_HISTORY
+ALWAYS call COMPLETE tool after the assistant has asked a question
+THINK before making you decision, have you provided enough information already or do you need to perform a different task?
 
 """
 
@@ -80,8 +77,7 @@ You have a maximum **STEPS** steps remaining to complete the users task
 Determine your objective based on the users input to set a task plan that uses your provided tools to accomplish your objective
 Return the task plan as a TD decision tree in a ```mermaid``` code box, and highlight the current task in yellow, use high contrast colors between the text and the background, use proper mermaid formatting, ie. this is how you color now:  classDef yellow fill:#FFFF00;
 Use good Mermaid syntax, no special characters inside the [brackets], etc
-If we are already progressing along the CURRENT_TIMELINE, move closer to COMPLETE, or return COMPLETE if the task is resonably complete, juding by the chat history
-Mark our progress COMPLETE after we complete the users request task. Truncate the amount of steps if we accomlish them out of order.
+If we are already progressing along the CURRENT_TIMELINE, move closer to COMPLETE, or return COMPLETE if the task is resonably compfafter we complete the users request . Truncate the amount of steps if we accomlish them out of order.
 """+"""
 f"CURRENT_TIMELINE:\n**CURRENT_OR_NONE**"
 """ + f"""
