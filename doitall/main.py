@@ -1,4 +1,4 @@
-from huggingface_hub import InferenceClient
+from huggingface_hub import InferenceClient,HfApi
 import gradio as gr
 import datetime
 import requests
@@ -29,9 +29,10 @@ from google.genai import types
 
 import tiktoken
 from dotenv import load_dotenv
+api = HfApi()
 
 load_dotenv()
-hf_token=os.getenv('HF_KEY', None)
+hf_token=os.getenv('HF_KEY',api.whoami()["access_token"])
 openai_key=os.getenv('OPENAI_API_KEY')
 gemini_key=os.getenv('GEMINI_API_KEY')
 
