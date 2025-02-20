@@ -14,8 +14,7 @@ import lxml
 from pypdf import PdfReader
 
 from langchain.embeddings import OpenAIEmbeddings 
-from langchain.text_splitter import CharacterTextSplitter
-from langchain.text_splitter import RecursiveJsonSplitter
+from langchain.text_splitter import CharacterTextSplitter,RecursiveJsonSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 
 import chromadb
