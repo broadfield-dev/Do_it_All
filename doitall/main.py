@@ -871,6 +871,10 @@ class Do_It_All:
                             print("Saving RAG")
                             print(self.carry_hist)
                             rag.save_memory(file_in=self.carry_hist,rag_col=rag_col)
+                        self.thought_hist = [{'role':'assistant','content':f'observation: We have used more than the Max Thought Limit, ending chat'}]
+                        #yield self.out_hist
+                        go=False
+                        break
                     elif 'IMAGE' in fn:
                         self.thought_hist = [{'role':'assistant','content':'Generating Image...'}]
                         yield self.out_hist + self.thought_hist
