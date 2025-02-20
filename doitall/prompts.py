@@ -33,7 +33,7 @@ DO NOT directly answer the users request
 REPLY ONLY with a tool call
 """+f"{TOOLS}"+""" 
 
-CALL action: COMPLETE action_input=COMPLETE if the ADVISOR recommends it
+CALL action: COMPLETE action_input=COMPLETE if the ADVISOR recommends it or IF THE USER NEEDS TO RESPOND FIRST
 NEVER repeat a recent assistant comment to the user if it is found recently (near the bottom of) the CHAT_HISTORY, RESPOND with an explanation or question or sumamry, and COMPLETE
 NEVER reply with a command that you have recently used in the CHAT_HISTORY
 ALWAYS call COMPLETE tool after the assistant has asked a question
