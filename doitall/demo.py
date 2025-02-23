@@ -58,9 +58,13 @@ client_cerebras = [
     {'type':'text','loc':'cerebras','key':'','name':'meta-llama/llama-3.3-70b','rank':'op','max_tokens':8192,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
 ]
 client_groq = [
-    {'type':'text','loc':'groq','key':'','name':'meta-llama/llama-3-70b','rank':'op','max_tokens':32768,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
-    {'type':'text','loc':'groq','key':'','name':'meta-llama/llama-3-8b','rank':'op','max_tokens':32768,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
-    {'type':'audio','loc':'groq','key':'','name':'openai/whisper-large-v3','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'text','loc':'groq','key':'','name':'deepseek-r1-distill-llama-70b','rank':'op','max_tokens':32768,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
+    {'type':'text','loc':'groq','key':'','name':'llama-3.3-70b-versatile','rank':'op','max_tokens':32768,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
+    {'type':'audio','loc':'groq','key':'','name':'llama-3.3-70b-specdec','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'audio','loc':'groq','key':'','name':'llama-3.1-8b-instant','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'audio','loc':'groq','key':'','name':'llama3-70b-8192','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'audio','loc':'groq','key':'','name':'whisper-large-v3','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'vision','loc':'groq','key':'','name':'llama-3.2-90b-vision-preview','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
 ]
 client_scaleway = [
     {'type':'text','loc':'scaleway','key':'','name':'meta-llama/llama-3.1-70b-instruct','rank':'op','max_tokens':32768,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
