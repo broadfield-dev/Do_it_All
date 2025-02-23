@@ -950,7 +950,8 @@ class Do_It_All:
                         yield from self.generate_stream(prompt, history,mod,max_tokens,seed,role='INTERNET_SEARCH',data=in_data)
                         history.extend(self.carry_hist)
                         self.out_hist=self.carry_hist
-                        self.save_file(self.out_hist)
+                        if save_to_file:
+                            self.save_file(self.out_hist)
                         if save_mem:
                             print("Saving RAG")
                             rag.save_memory(file_in=self.out_hist,rag_col=rag_col)
