@@ -33,6 +33,7 @@ load_dotenv()
 hf_token=os.getenv('HF_KEY',None)
 openai_key=os.getenv('OPENAI_API_KEY')
 gemini_key=os.getenv('GEMINI_API_KEY')
+groq_key = os.getenv('GROQ_API_KEY', None)
 
 # Function to count tokens
 def count_tokens(message):
