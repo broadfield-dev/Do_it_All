@@ -211,7 +211,7 @@ class Do_It_All:
         return [{'role':'assistant','content': {'path':output}}]
 
     def compress_data(self,c,purpose, history,mod,tok,seed,data):
-        self.MAX_HISTORY=int(self.txt_clients[int(mod)]['max_tokens'])
+        self.MAX_HISTORY=int(self.txt_clients[int(mod)]['max_tokens']) / 2
 
         isV(data)
         resp=[None,]
@@ -257,7 +257,7 @@ class Do_It_All:
         return str(resp_o)
 
     def find_all(self,prompt,history, url,mod,tok,seed,data):
-        self.MAX_HISTORY=int(self.txt_clients[int(mod)]['max_tokens'])
+        self.MAX_HISTORY=int(self.txt_clients[int(mod)]['max_tokens']) / 2
         return_list=[]
         isV (f"trying URL:: {url}")        
         try:
@@ -559,6 +559,7 @@ class Do_It_All:
                 yield output
 
         elif self.txt_clients[int(mod)]['loc'] == 'groq':
+            
             #def stream_groq(model_name, messages):
             model=self.txt_clients[int(mod)]['name'],
             if not groq_key:
@@ -745,7 +746,7 @@ class Do_It_All:
             f.write(out_chat)   
 
     def agent(self,prompt_in,history,mod=2,im_mod=1,tok_in="",rand_seed=True,seed=1,max_thought=5,save_mem=False,recall_mem=False,rag_col=False):
-        self.MAX_HISTORY=int(self.txt_clients[int(mod)]['max_tokens'])
+        self.MAX_HISTORY=int(self.txt_clients[int(mod)]['max_tokens']) / 2
         self.out_hist=[]
         print(seed)
         isV(prompt_in,True)
