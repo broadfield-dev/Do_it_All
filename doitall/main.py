@@ -534,7 +534,26 @@ class Do_It_All:
                 output += response['message']['content']
                 #print(response['message']['content'], end='', flush=True)
                 yield output
-            
+
+        elif self.txt_clients[int(mod)]['loc'] == 'groq':
+            #def stream_groq(model_name, messages):
+            model=self.txt_clients[int(mod)]['name'],
+            if not groq_key:
+                yield hist_in+[{'role':'assistant','content':"Error: Groq API key not provided"}]
+                return
+            from groq import Groq  # Requires `pip install groq`
+            client = Groq(api_key=groq_key)
+            stream = client.chat.completions.create(
+                model=model_name,
+                messages=messages,
+                stream=True
+            )
+            for chunk in stream:
+                if chunk.choices[0].delta.content is not None:
+                    yield hist_in+[{'role':'assistant','content':chunk.choices[0].delta.content.replace('<|im_start|>','').replace('<|im_end|>','')}]
+                    #yield chunk.choices[0].delta.content
+        
+        
         elif self.txt_clients[int(mod)]['loc'] == 'openai':
             client = OpenAI(api_key=openai_key)
             stream = client.chat.completions.create(
