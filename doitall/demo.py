@@ -60,10 +60,17 @@ client_cerebras = [
 client_groq = [
     {'type':'text','loc':'groq','key':'','name':'deepseek-r1-distill-llama-70b','rank':'op','max_tokens':32768,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
     {'type':'text','loc':'groq','key':'','name':'llama-3.3-70b-versatile','rank':'op','max_tokens':32768,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
-    {'type':'audio','loc':'groq','key':'','name':'llama-3.3-70b-specdec','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
-    {'type':'audio','loc':'groq','key':'','name':'llama-3.1-8b-instant','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
-    {'type':'audio','loc':'groq','key':'','name':'llama3-70b-8192','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'text','loc':'groq','key':'','name':'llama-3.3-70b-specdec','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'text','loc':'groq','key':'','name':'llama-3.1-8b-instant','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'text','loc':'groq','key':'','name':'llama3-70b-8192','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'text','loc':'groq','key':'','name':'llama3-8b-8192','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'text','loc':'groq','key':'','name':'llama-guard-3-8b','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'text','loc':'groq','key':'','name':'mixtral-8x7b-32768','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'text','loc':'groq','key':'','name':'gemma2-9b-it','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
     {'type':'audio','loc':'groq','key':'','name':'whisper-large-v3','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'audio','loc':'groq','key':'','name':'whisper-large-v3-turbo','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'audio','loc':'groq','key':'','name':'distil-whisper-large-v3-en','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'vision','loc':'groq','key':'','name':'llama-3.2-11b-vision-preview','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
     {'type':'vision','loc':'groq','key':'','name':'llama-3.2-90b-vision-preview','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
 ]
 client_scaleway = [
