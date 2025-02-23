@@ -574,7 +574,8 @@ class Do_It_All:
                 if chunk.choices[0].delta.content is not None:
                     output+=chunk.choices[0].delta.content
                     yield hist_in+[{'role':'assistant','content':output.replace('<|im_start|>','').replace('<|im_end|>','')}]
-        
+            self.carry_hist= hist_in+[{'role':'assistant','content':output.replace('<|im_start|>','').replace('<|im_end|>','')}]
+
         
         elif self.txt_clients[int(mod)]['loc'] == 'openai':
             client = OpenAI(api_key=openai_key)
