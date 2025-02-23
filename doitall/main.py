@@ -424,8 +424,8 @@ class Do_It_All:
                 return
             client = Groq(api_key=groq_key)
             stream = client.chat.completions.create(
-                model=model_name,
-                messages=messages,
+                model=self.txt_clients[int(mod)]['name'],
+                messages=[{'role': 'system', 'content': system_prompt},{'role':'user','content':prompt}],
                 stream=True
             )
             for chunk in stream:
@@ -566,8 +566,8 @@ class Do_It_All:
                 return
             client = Groq(api_key=groq_key)
             stream = client.chat.completions.create(
-                model=model_name,
-                messages=messages,
+                model=self.txt_clients[int(mod)]['name'],
+                messages=[{'role': 'system', 'content': system_prompt},{'role':'user','content':prompt}],
                 stream=True
             )
             for chunk in stream:
