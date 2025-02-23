@@ -11,46 +11,81 @@ def isV(inp,is_=False):  # Verbose
         is_=False
 
 clients_main=[]
-client_hf=[
-    
-    {'type':'image','loc':'hf','key':'','name':'black-forest-labs/FLUX.1-dev','rank':'op','max_tokens':16000,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
-    {'type':'image','loc':'hf','key':'','name':'ostris/Flex.1-alpha','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
-    {'type':'text','loc':'hf','name':'Qwen/Qwen2.5-Coder-32B-Instruct','rank':'op','max_tokens':16000,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
-    {'type':'text','loc':'hf','name':'Qwen/Qwen2.5-72B-Instruct','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
-    {'type':'text','loc':'hf','name':'Qwen/QwQ-32B-Preview','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
-    {'type':'text','loc':'hf','name':'mistralai/Mixtral-8x7B-Instruct-v0.1','rank':'op','max_tokens':40000,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
-    {'type':'text','loc':'hf','name':'mistralai/Mixtral-7B-Instruct-v0.2','rank':'op','max_tokens':40000,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
-    {'type':'text','loc':'hf','name':'mistralai/Mixtral-7B-Instruct-v0.3','rank':'op','max_tokens':40000,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
-    {'type':'text','loc':'hf','name':'deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B','rank':'op','max_tokens':40000,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
-    {'type':'text','loc':'hf','name':'deepseek-ai/DeepSeek-R1-Distill-Qwen-32B','rank':'op','max_tokens':40000,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
-    {'type':'text','loc':'hf','name':'meta-llama/Llama-3.1-8B-Instruct','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
-    {'type':'text','loc':'hf','name':'meta-llama/Llama-3,2-3B-Instruct','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
-    {'type':'text','loc':'hf','name':'meta-llama/Llama-3.3-70B-Instruct','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
-    {'type':'text','loc':'hf','name':'google/gemma-2-2b-it','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
-    {'type':'text','loc':'hf','name':'google/gemma-2-9b-it','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
-    {'type':'text','loc':'hf','name':'google/gemma-2-27b-it','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
-    {'type':'text','loc':'hf','name':'microsoft/Phi-3-mini-4k-instruct','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
-    {'type':'text','loc':'hf','name':'microsoft/Phi-3.5-mini-instruct','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+# Original and updated dictionaries with free LLM APIs
+client_hf = [
+    {'type':'image','loc':'hf','key':'','name':'black-forest-labs/FLUX.1-dev','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'text','loc':'hf','key':'','name':'Qwen/Qwen2.5-Coder-32B-Instruct','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'text','loc':'hf','key':'','name':'mistralai/Mixtral-8x7B-Instruct-v0.1','rank':'op','max_tokens':40000,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
+    {'type':'text','loc':'hf','key':'','name':'deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B','rank':'op','max_tokens':40000,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
+    {'type':'vision','loc':'hf','key':'','name':'microsoft/resnet-50','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    # Added from free LLM APIs (HuggingFace Serverless Inference)
+    {'type':'text','loc':'hf','key':'','name':'mistralai/Mistral-7B-Instruct-v0.1','rank':'op','max_tokens':32768,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
+    {'type':'text','loc':'hf','key':'','name':'Qwen/Qwen1.5-7B-Chat','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
 ]
-
-client_openai=[
-    {'type':'text','loc':'openai','name':"gpt-4o-mini",'rank':'op','max_tokens':128000,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
-    {'type':'audio','loc':'openai','name':"whisper-1",'rank':'op','max_tokens':128000,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
-    {'type':'audio','loc':'openai','name':"tts-1",'rank':'op','max_tokens':128000,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
-    {'type':'image','loc':'openai','name':"dall-e-2",'rank':'op','max_tokens':128000,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
-    {'type':'image','loc':'openai','name':"dall-e-3",'rank':'op','max_tokens':128000,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
+client_gradio = [
+    {'type':'text','loc':'gradio','key':'','name':'bigscience/bloomz','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
 ]
-client_google=[
-    {'type':'text','loc':'google','name':"gemini-2.0-flash-exp",'rank':'op','max_tokens':128000,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
-    {'type':'text','loc':'google','name':"gemini-exp-1206",'rank':'op','max_tokens':128000,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
-    {'type':'text','loc':'google','name':"gemini-2.0-flash-thinking-exp-1219",'rank':'op','max_tokens':64000,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
-    {'type':'text','loc':'google','name':"learnlm-1.5-pro-experimental",'rank':'op','max_tokens':128000,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
+client_ollama = [
+    {'type':'text','loc':'ollama','key':'','name':'hf.co/bartowski/SmallThinker-3B-Preview-GGUF:IQ4_NL','rank':'op','max_tokens':16384,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
 ]
-client_gradio=[
-    {'type':'text','loc':'gradio','name':'bigscience/bloomz','rank':'op','max_tokens':16384,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+client_openai = [
+    {'type':'text','loc':'openai','key':'','name':'gpt-4o-mini','rank':'op','max_tokens':128000,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'audio','loc':'openai','key':'','name':'whisper-1','rank':'op','max_tokens':128000,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'audio','loc':'openai','key':'','name':'tts-1','rank':'op','max_tokens':128000,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'image','loc':'openai','key':'','name':'dall-e-2','rank':'op','max_tokens':128000,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'image','loc':'openai','key':'','name':'dall-e-3','rank':'op','max_tokens':128000,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
 ]
-client_ollama=[
-    {'type':'text','loc':'ollama','name':'hf.co/bartowski/SmallThinker-3B-Preview-GGUF:IQ4_NL','rank':'op','max_tokens':16384,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
+client_google = [
+    {'type':'text','loc':'google','key':'','name':'gemini-2.0-flash-exp','rank':'op','max_tokens':128000,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'text','loc':'google','key':'','name':'gemini-exp-1206','rank':'op','max_tokens':128000,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'text','loc':'google','key':'','name':'gemini-2.0-flash-thinking-exp-1219','rank':'op','max_tokens':64000,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'text','loc':'google','key':'','name':'learnlm-1.5-pro-experimental','rank':'op','max_tokens':128000,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
+    # Added from free LLM APIs (Google AI Studio)
+    {'type':'text','loc':'google','key':'','name':'gemini-2.0-flash','rank':'op','max_tokens':128000,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'text','loc':'google','key':'','name':'gemini-1.5-flash','rank':'op','max_tokens':128000,'schema':{'bos':['<|system|>','<|user|>','<|assistant|>'],'eos':'<|im_end|>'},'ppt':'None'},
+]
+client_openrouter = [
+    {'type':'text','loc':'openrouter','key':'','name':'meta-llama/llama-70b','rank':'op','max_tokens':32768,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
+    {'type':'text','loc':'openrouter','key':'','name':'google/gemma-2-9b-instruct','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+    {'type':'text','loc':'openrouter','key':'','name':'mistralai/mixtral-7b-instruct','rank':'op','max_tokens':32768,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
+]
+client_mistral = [
+    {'type':'text','loc':'mistral','key':'','name':'mistral/codestral','rank':'op','max_tokens':32768,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
+    {'type':'text','loc':'mistral','key':'','name':'mistral/mistral-7b-instruct','rank':'op','max_tokens':32768,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
+]
+client_cerebras = [
+    {'type':'text','loc':'cerebras','key':'','name':'meta-llama/llama-3.1-8b','rank':'op','max_tokens':8192,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
+    {'type':'text','loc':'cerebras','key':'','name':'meta-llama/llama-3.3-70b','rank':'op','max_tokens':8192,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
+]
+client_groq = [
+    {'type':'text','loc':'groq','key':'','name':'meta-llama/llama-3-70b','rank':'op','max_tokens':32768,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
+    {'type':'text','loc':'groq','key':'','name':'meta-llama/llama-3-8b','rank':'op','max_tokens':32768,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
+    {'type':'audio','loc':'groq','key':'','name':'openai/whisper-large-v3','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+]
+client_scaleway = [
+    {'type':'text','loc':'scaleway','key':'','name':'meta-llama/llama-3.1-70b-instruct','rank':'op','max_tokens':32768,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
+    {'type':'text','loc':'scaleway','key':'','name':'meta-llama/llama-3.1-8b-instruct','rank':'op','max_tokens':32768,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
+]
+client_ovh = [
+    {'type':'text','loc':'ovh','key':'','name':'meta-llama/llama-3-8b-instruct','rank':'op','max_tokens':32768,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
+    {'type':'text','loc':'ovh','key':'','name':'mistralai/mixtral-8x7b-instruct','rank':'op','max_tokens':32768,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
+]
+client_together = [
+    {'type':'text','loc':'together','key':'','name':'meta-llama/llama-3.2-11b-vision-instruct','rank':'op','max_tokens':32768,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
+    {'type':'text','loc':'together','key':'','name':'meta-llama/llama-3.3-70b-instruct','rank':'op','max_tokens':32768,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
+]
+client_cohere = [
+    {'type':'text','loc':'cohere','key':'','name':'cohere/command-r','rank':'op','max_tokens':32768,'schema':{'bos':'<|im_start|>','eos':'<|im_end|>'},'ppt':'None'},
+]
+client_cloudflare = [
+    {'type':'text','loc':'cloudflare','key':'','name':'meta-llama/llama-3-8b-instruct','rank':'op','max_tokens':32768,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
+    {'type':'text','loc':'cloudflare','key':'','name':'mistralai/mistral-7b-instruct-v0.1','rank':'op','max_tokens':32768,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
+]
+client_shaleprotocol = [
+    {'type':'text','loc':'shaleprotocol','key':'','name':'various-llm-model','rank':'op','max_tokens':32768,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
+]
+client_arliai = [
+    {'type':'text','loc':'arliai','key':'','name':'various-llm-model','rank':'op','max_tokens':32768,'schema':{'bos':'<s>','eos':'</s>'},'ppt':'None'},
 ]
 clients_main.extend([{'type':'label','loc':'label','name':"-- Huggingface --",'rank':'','max_tokens':0,'schema':{'bos':'','eos':''},'ppt':'None'}])
 clients_main.extend(client_hf)
@@ -62,6 +97,28 @@ clients_main.extend([{'type':'label','loc':'label','name':"-- Gradio --",'rank':
 clients_main.extend(client_gradio)
 clients_main.extend([{'type':'label','loc':'label','name':"-- Ollama --",'rank':'','max_tokens':0,'schema':{'bos':'','eos':''},'ppt':'None'}])
 clients_main.extend(client_ollama)
+clients_main.extend([{'type':'label','loc':'label','name':"-- OpenRouter --",'rank':'','max_tokens':0,'schema':{'bos':'','eos':''},'ppt':'None'}])
+clients_main.extend(client_openrouter)
+clients_main.extend([{'type':'label','loc':'label','name':"-- Mistral --",'rank':'','max_tokens':0,'schema':{'bos':'','eos':''},'ppt':'None'}])
+clients_main.extend(client_mistral)
+clients_main.extend([{'type':'label','loc':'label','name':"-- Cerebras --",'rank':'','max_tokens':0,'schema':{'bos':'','eos':''},'ppt':'None'}])
+clients_main.extend(client_cerebras)
+clients_main.extend([{'type':'label','loc':'label','name':"-- Groq --",'rank':'','max_tokens':0,'schema':{'bos':'','eos':''},'ppt':'None'}])
+clients_main.extend(client_groq)
+clients_main.extend([{'type':'label','loc':'label','name':"-- Scaleway --",'rank':'','max_tokens':0,'schema':{'bos':'','eos':''},'ppt':'None'}])
+clients_main.extend(client_scaleway)
+clients_main.extend([{'type':'label','loc':'label','name':"-- OVH --",'rank':'','max_tokens':0,'schema':{'bos':'','eos':''},'ppt':'None'}])
+clients_main.extend(client_ovh)
+clients_main.extend([{'type':'label','loc':'label','name':"-- Together --",'rank':'','max_tokens':0,'schema':{'bos':'','eos':''},'ppt':'None'}])
+clients_main.extend(client_together)
+clients_main.extend([{'type':'label','loc':'label','name':"-- Cohere --",'rank':'','max_tokens':0,'schema':{'bos':'','eos':''},'ppt':'None'}])
+clients_main.extend(client_cohere)
+clients_main.extend([{'type':'label','loc':'label','name':"-- Cloudflare --",'rank':'','max_tokens':0,'schema':{'bos':'','eos':''},'ppt':'None'}])
+clients_main.extend(client_cloudflare)
+clients_main.extend([{'type':'label','loc':'label','name':"-- Shaleprotocol --",'rank':'','max_tokens':0,'schema':{'bos':'','eos':''},'ppt':'None'}])
+clients_main.extend(client_shaleprotocol)
+clients_main.extend([{'type':'label','loc':'label','name':"-- Arliai --",'rank':'','max_tokens':0,'schema':{'bos':'','eos':''},'ppt':'None'}])
+clients_main.extend(client_arliai)
 txt_box=[]
 img_box=[]
 vis_box=[]
