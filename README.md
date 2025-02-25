@@ -14,6 +14,7 @@ The **Do It All** basic agent system for Python. It provides a framework for bui
 - Huggingface
 - OpenAI
 - Google GenAI
+- Groq
 
 ## Installation
 ### CLI
